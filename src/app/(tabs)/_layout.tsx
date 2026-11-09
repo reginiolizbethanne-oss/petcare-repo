@@ -1,0 +1,84 @@
+import { Ionicons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
+import React from 'react';
+import type { ColorValue } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FloatingTabBar, TAB_BAR_GAP, TAB_BAR_HEIGHT } from '@/components/FloatingTabBar';
+import { useTheme } from '@/theme';
+
+type IconName = React.ComponentProps<typeof Ionicons>['name'];
+
+/** Tab icon helper with active/inactive states */
+function tabIcon(filled: IconName, outline: IconName) {
+  function TabIcon({ color, focused, size }: { color: ColorValue; focused: boolean; size: number }) {
+    return <Ionicons name={focused ? filled : outline} size={size} color={color} />;
+  }
+  return TabIcon;
+}
+
+export default function TabLayout() {
+  const theme = useTheme();
+  const insets = useSafeAreaInsets();
+
+  return (
+    <Tabs
+      tabBar={(props) => <FloatingTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+        sceneStyle: {
+          backgroundColor: theme.background,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom + TAB_BAR_GAP * 2 + TAB_BAR_HEIGHT,
+        },
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Home',
+          tabBarIcon: tabIcon('home', 'home-outline'),
+        }}
+      />
+      <Tabs.Screen
+        name="reminders"
+        options={{
+          title: 'Reminders',
+          tabBarIcon: tabIcon('notifications', 'notifications-outline'),
+        }}
+      />
+      <Tabs.Screen
+        name="inventory"
+        options={{
+          title: 'Inventory',
+          tabBarIcon: tabIcon('cube', 'cube-outline'),
+        }}
+      />
+      <Tabs.Screen
+        name="pets"
+        options={{
+          title: 'Profile',
+          tabBarIcon: tabIcon('person', 'person-outline'),
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'History',
+          tabBarIcon: tabIcon('time', 'time-outline'),
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: 'AI Vet',
+          sceneStyle: {
+            backgroundColor: theme.background,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+          },
+          tabBarIcon: tabIcon('chatbubble-ellipses', 'chatbubble-ellipses-outline'),
+        }}
+      />
+    </Tabs>
+  );
+}
