@@ -11,16 +11,19 @@ npx expo lint                                       # eslint (eslint-config-expo
 npx expo-doctor                                     # dependency/config health
 npx expo prebuild --platform android --clean        # regenerate android/
 cd android && ./gradlew assembleDebug               # build APK
+cd android && ./gradlew assembleRelease             # release APK (signed w/ debug keystore)
 # faster local build (ARM only, matches LiteRT-LM): add -PreactNativeArchitectures=arm64-v8a
 ```
 
 APK output: `android/app/build/outputs/apk/debug/app-debug.apk`
+Release output: `android/app/build/outputs/apk/release/app-release.apk`
 
 ## Environment used for the native build
 
 ```bash
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17       # brew openjdk@17
-export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools  # brew android-commandlinetools
+export ANDROID_HOME=$HOME/Library/Android/sdk       # Android SDK (has ndk 27.1, platform 36)
+export GRADLE_USER_HOME="/Volumes/CICS Drive/Development Tools/gradle"  # ~/.gradle symlink is stale
 export PATH="$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$PATH"
 export SKIP_IOS_FRAMEWORK_DOWNLOAD=1                # for npm install (litert-lm postinstall)
 ```
